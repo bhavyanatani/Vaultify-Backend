@@ -8,12 +8,18 @@ const app = express();
 connectToMongo();
 
 app.use(express.json());
+const allowedOrigins = [
+  "http://localhost:3000", // for local dev
+  "https://vaultify-frontend-mu.vercel.app" // your deployed frontend
+];
+
 app.use(
   cors({
-    origin: "*", // change to your frontend URL after deployment for security
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
   })
 );
-
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/password', require('./routes/password'));
 
